@@ -8,7 +8,6 @@ const HTML_ZERO_VALUE = "0";
 const HTML_CROSS_VALUE = "X";
 
 const N = 3;
-const M = 3;
 
 const EMPTY_VALUE = -1;
 const ZERO_VALUE = 0;
@@ -52,6 +51,49 @@ function updateCell(cellId) {
 }
 
 function checkGameStatus(cellId) {
+	let cellI = cellId[HTML_CELL_ID_PREFIX.length];
+	let cellJ = cellId[HTML_CELL_ID_PREFIX.length + 1];
+	let cellValue = gameTable[cellI][cellJ];
+
+	let count = 0;
+
+	for (let i = 0; i < N; i++) {
+		if (gameTable[i][cellJ] === cellValue) {
+			++count;
+		}
+	}
+
+	if (count !== 3) {
+		count = 0;
+
+		for (let j = 0; j < N; j++) {
+			if (gameTable[cellI][j] === cellValue) {
+				++count;
+			}
+		}		
+	}
+
+	if (count !== 3 && cellI === cellJ) {
+		count = 0;
+
+		for (let i = 0; i < N; i++) {
+			if (gameTable[i][i] === cellValue) {
+				++count;
+			}
+		}
+	}
+
+	if (count !== 3 && cellI + cellJ === N - 1) {
+		count = 0;
+
+		for (let i = 0; i < N; i++) {
+			for (let j = 0; j < N; j++) {
+				if (i + j === N - 1 && gameTable[i][i] === cellValue) {
+					++count;
+				}
+			}
+		}
+	}
 }
 
 function resetGameTable() {
@@ -60,7 +102,7 @@ function resetGameTable() {
 	for (let i = 0; i < N; i++) {
 		gameTable.push([]);
 
-		for (let j = 0; j < M; j++) {
+		for (let j = 0; j < N; j++) {
 			gameTable[i].push(EMPTY_VALUE);
 		}
 	}
