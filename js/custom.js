@@ -2,33 +2,20 @@
 
 const HTML_TABLE_ID = "tableId";
 const HTML_CELL_ID_PREFIX = "cell";
+const HTML_CROSS_NOTIFICATION_ID = "crossNotificationId";
+const HTML_ZERO_NOTIFICATION_ID = "zeroNotificationId";
 const HTML_RESET_BUTTON_ID = "resetButtonId";
 
-const HTML_ZERO_VALUE = "0";
 const HTML_CROSS_VALUE = "X";
+const HTML_ZERO_VALUE = "0";
 
 const N = 3;
-
-const EMPTY_VALUE = -1;
-const ZERO_VALUE = 0;
 const CROSS_VALUE = 1;
+const ZERO_VALUE = 0;
+const EMPTY_VALUE = -1;
 
 var gameTable;
 var clickValue;
-
-function tableClickListener(event) {
-	let cellId = event.target.id;
-	let isCellUpdated = updateCell(cellId);
-
-	if (isCellUpdated) {
-		checkGameStatus(cellId);
-	}
-}
-
-function resetButtonClickListener() {
-	resetGameTable();
-	resetClickValue();
-}
 
 function updateCell(cellId) {
 	let result = false;
@@ -37,13 +24,20 @@ function updateCell(cellId) {
 			&& cellId !== null
 			&& typeof cellId === "string"
 			&& cellId.startsWith(HTML_CELL_ID_PREFIX)) {
-		let i = cellId[HTML_CELL_ID_PREFIX.length];
-		let j = cellId[HTML_CELL_ID_PREFIX.length + 1];
+		let i = parseInt(cellId[HTML_CELL_ID_PREFIX.length]);
+		let j = parseInt(cellId[HTML_CELL_ID_PREFIX.length + 1]);
 
 		if (gameTable[i][j] === EMPTY_VALUE) {
 			gameTable[i][j] = clickValue;
-			clickValue = clickValue === CROSS_VALUE ? ZERO_VALUE : CROSS_VALUE;
 			result = true;
+
+			if (clickValue === CROSS_VALUE) {
+				$("#" + cellId).html(HTML_CROSS_VALUE);
+				clickValue = ZERO_VALUE;
+			} else {
+				$("#" + cellId).html(HTML_ZERO_VALUE);
+				clickValue = CROSS_VALUE;
+			}
 		}
 	}
 
@@ -63,7 +57,7 @@ function checkGameStatus(cellId) {
 		}
 	}
 
-	if (count !== 3) {
+	if (count !== N) {
 		count = 0;
 
 		for (let j = 0; j < N; j++) {
@@ -73,7 +67,7 @@ function checkGameStatus(cellId) {
 		}		
 	}
 
-	if (count !== 3 && cellI === cellJ) {
+	if (count !== N && cellI === cellJ) {
 		count = 0;
 
 		for (let i = 0; i < N; i++) {
@@ -83,7 +77,7 @@ function checkGameStatus(cellId) {
 		}
 	}
 
-	if (count !== 3 && cellI + cellJ === N - 1) {
+	if (count !== N && cellI + cellJ === N - 1) {
 		count = 0;
 
 		for (let i = 0; i < N; i++) {
@@ -110,6 +104,20 @@ function resetGameTable() {
 
 function resetClickValue() {
 	clickValue = CROSS_VALUE;
+}
+
+function tableClickListener(event) {
+	let cellId = event.target.id;
+	let isCellUpdated = updateCell(cellId);
+
+	if (isCellUpdated) {
+		checkGameStatus(cellId);
+	}
+}
+
+function resetButtonClickListener() {
+	resetGameTable();
+	resetClickValue();
 }
 
 $("#" + HTML_TABLE_ID).on("click", tableClickListener);
