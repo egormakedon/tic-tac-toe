@@ -1,6 +1,7 @@
 "use strict"
 
 const HTML_TABLE_ID = "tableId";
+const HTML_ROW_ID_PREFIX = "row";
 const HTML_CELL_ID_PREFIX = "cell";
 const HTML_CROSS_NOTIFICATION_ID = "crossNotificationId";
 const HTML_ZERO_NOTIFICATION_ID = "zeroNotificationId";
@@ -9,11 +10,11 @@ const HTML_RESET_BUTTON_ID = "resetButtonId";
 const HTML_CROSS_VALUE = "X";
 const HTML_ZERO_VALUE = "0";
 
-const N = 3;
 const CROSS_VALUE = 1;
 const ZERO_VALUE = 0;
 const EMPTY_VALUE = -1;
 
+var n;
 var gameTable;
 var clickValue;
 
@@ -90,20 +91,49 @@ function checkGameStatus(cellId) {
 	}
 }
 
-function resetGameTable() {
+function appendRow(i) {
+	let tr = $("<tr/>");
+	tr.attr("id", HTML_ROW_ID_PREFIX + i);
+
+	$("#" + HTML_TABLE_ID + " tbody").append(tr);
+}
+
+function appendColumn(i, j) {
+	let td = $("<td/>");
+	td.attr("id", HTML_CELL_ID_PREFIX + i + j);
+	td.html("test");
+
+	$("#" + HTML_ROW_ID_PREFIX + i).append(td);
+}
+
+function initTable() {
+	$("#" + HTML_TABLE_ID + " tbody").empty();
 	gameTable = [];
 
-	for (let i = 0; i < N; i++) {
+	for (let i = 0; i < n; i++) {
+		appendRow(i);
 		gameTable.push([]);
 
-		for (let j = 0; j < N; j++) {
+		for (let j = 0; j < n; j++) {
+			appendColumn(i, j);
 			gameTable[i].push(EMPTY_VALUE);
 		}
 	}
 }
 
-function resetClickValue() {
+function initClickValue() {
 	clickValue = CROSS_VALUE;
+}
+
+function initNotifications() {
+	$("#" + HTML_CROSS_NOTIFICATION_ID).hide();
+	$("#" + HTML_ZERO_NOTIFICATION_ID).hide();
+}
+
+function init() {
+	initTable();
+	initClickValue();
+	initNotifications();
 }
 
 function tableClickListener(event) {
@@ -116,14 +146,13 @@ function tableClickListener(event) {
 }
 
 function resetButtonClickListener() {
-	resetGameTable();
-	resetClickValue();
+	init();
 }
 
 $("#" + HTML_TABLE_ID).on("click", tableClickListener);
 $("#" + HTML_RESET_BUTTON_ID).on("click", resetButtonClickListener);
 
 $(document).ready(function() {
-	resetGameTable();
-	resetClickValue();
+	n = 3;
+	init();
 });
