@@ -1,5 +1,7 @@
 "use strict"
 
+const HTML_TABLE_SIZE_ID = "tableSizeId";
+const HTML_APPLY_TABLE_SIZE_BUTTON_ID = "applyTableSizeButtonId";
 const HTML_TABLE_ID = "tableId";
 const HTML_ROW_ID_PREFIX = "row";
 const HTML_CELL_ID_PREFIX = "cell";
@@ -136,6 +138,17 @@ function init() {
 	initNotifications();
 }
 
+function applyTableSizeButtonClickListener() {
+	let tableSize = $("#" + HTML_TABLE_SIZE_ID).val();
+
+	if (!(tableSize < 3 || Math.round(tableSize) === n)) {
+		n = Math.round(tableSize);
+		init();
+	}
+
+	$("#" + HTML_TABLE_SIZE_ID).val(n);
+}
+
 function tableClickListener(event) {
 	let cellId = event.target.id;
 	let isCellUpdated = updateCell(cellId);
@@ -149,6 +162,7 @@ function resetButtonClickListener() {
 	init();
 }
 
+$("#" + HTML_APPLY_TABLE_SIZE_BUTTON_ID).on("click", applyTableSizeButtonClickListener);
 $("#" + HTML_TABLE_ID).on("click", tableClickListener);
 $("#" + HTML_RESET_BUTTON_ID).on("click", resetButtonClickListener);
 
