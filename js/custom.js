@@ -19,6 +19,7 @@ const EMPTY_VALUE = -1;
 var n;
 var gameTable;
 var clickValue;
+var isGameOver;
 
 function updateCell(cellId) {
 	let result = false;
@@ -47,49 +48,60 @@ function updateCell(cellId) {
 	return result;
 }
 
-function checkGameStatus(cellId) {
-	let cellI = cellId[HTML_CELL_ID_PREFIX.length];
-	let cellJ = cellId[HTML_CELL_ID_PREFIX.length + 1];
-	let cellValue = gameTable[cellI][cellJ];
-
+function doGameAlgorithm(cellI, cellJ, cellValue) {
 	let count = 0;
 
-	for (let i = 0; i < N; i++) {
+	for (let i = 0; i < n; i++) {
 		if (gameTable[i][cellJ] === cellValue) {
 			++count;
 		}
 	}
 
-	if (count !== N) {
+	if (count !== n) {
 		count = 0;
 
-		for (let j = 0; j < N; j++) {
+		for (let j = 0; j < n; j++) {
 			if (gameTable[cellI][j] === cellValue) {
 				++count;
 			}
-		}		
+		}
 	}
 
-	if (count !== N && cellI === cellJ) {
+	if (count !== n && cellI === cellJ) {
 		count = 0;
 
-		for (let i = 0; i < N; i++) {
+		for (let i = 0; i < n; i++) {
 			if (gameTable[i][i] === cellValue) {
 				++count;
 			}
 		}
 	}
 
-	if (count !== N && cellI + cellJ === N - 1) {
+	if (count !== n && cellI + cellJ === n - 1) {
 		count = 0;
 
-		for (let i = 0; i < N; i++) {
-			for (let j = 0; j < N; j++) {
-				if (i + j === N - 1 && gameTable[i][i] === cellValue) {
-					++count;
-				}
+		for (let i = 0; i < n; i++) {
+			if (gameTable[i][n - i - 1] === cellValue) {
+				++count;
 			}
 		}
+	}
+
+	return count;
+}
+
+function checkGameStatus(cellId) {
+	let cellI = parseInt(cellId[HTML_CELL_ID_PREFIX.length]);
+	let cellJ = parseInt(cellId[HTML_CELL_ID_PREFIX.length + 1]);
+	let cellValue = gameTable[cellI][cellJ];
+
+	let count = doGameAlgorithm(cellI, cellJ, cellValue);
+
+	if (count === n) {
+		let notificatinId = cellValue === CROSS_VALUE ? HTML_CROSS_NOTIFICATION_ID : HTML_ZERO_NOTIFICATION_ID;
+
+		$("#" + notificatinId).show();
+		isGameOver = true;
 	}
 }
 
@@ -127,6 +139,10 @@ function initClickValue() {
 	clickValue = CROSS_VALUE;
 }
 
+function initIsGameOver() {
+	isGameOver = false;
+}
+
 function initNotifications() {
 	$("#" + HTML_CROSS_NOTIFICATION_ID).hide();
 	$("#" + HTML_ZERO_NOTIFICATION_ID).hide();
@@ -135,14 +151,17 @@ function initNotifications() {
 function init() {
 	initTable();
 	initClickValue();
+	initIsGameOver();
 	initNotifications();
 }
 
 function applyTableSizeButtonClickListener() {
-	let tableSize = $("#" + HTML_TABLE_SIZE_ID).val();
+	let tableSize = Math.round($("#" + HTML_TABLE_SIZE_ID).val());
 
-	if (!(tableSize < 3 || Math.round(tableSize) === n)) {
-		n = Math.round(tableSize);
+	if (!(tableSize < 3
+			|| tableSize > 9
+			|| tableSize === n)) {
+		n = tableSize;
 		init();
 	}
 
@@ -150,11 +169,12 @@ function applyTableSizeButtonClickListener() {
 }
 
 function tableClickListener(event) {
-	let cellId = event.target.id;
-	let isCellUpdated = updateCell(cellId);
+	if (!isGameOver) {
+		let cellId = event.target.id;
 
-	if (isCellUpdated) {
-		checkGameStatus(cellId);
+		if (updateCell(cellId)) {
+			checkGameStatus(cellId);
+		}
 	}
 }
 
