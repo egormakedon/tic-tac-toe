@@ -1,43 +1,41 @@
 <!DOCTYPE html>
-
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-
-		<title>Tic Tac Toe</title>
-		<meta name="description" content="Tic Tac Toe game written on JS">
-		<meta name="author" content="Yahor Makedon">
-
-		<link rel="icon" href="img/icon.png">
-		<link rel="stylesheet" type="text/css" href="css/custom.css">
-	</head>
-
-	<body>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<base href="./">
+	<title>Tic Tac Toe</title>
+	<meta name="description" content="Tic Tac Toe game written on JS">
+	<meta name="author" content="Yahor Makedon">
+	<link rel="shortcut icon" type="image/png" href="img/favicon.png">
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+	<div>
 		<div>
-			<div>
-				<label for="tableSizeId">size(3-9):</label>
-				<input id="tableSizeId" type="number" value="3">
-				<button id="applyTableSizeButtonId">apply</button>
-			</div>
-
-			<div>
-				<table id="tableId">
-					<tbody></tbody>
-				</table>
-			</div>
-
-			<div>
-				<p id="crossNotificationId">X wins!!!</p>
-				<p id="zeroNotificationId">0 wins!!!</p>
-			</div>
-
-			<div>
-				<button id="resetButtonId">reset</button>
-			</div>
+			<label for="tableSizeId">size(3-9):</label>
+			<input id="tableSizeId" type="number" value="3">
+			<button id="applyTableSizeButtonId">apply</button>
 		</div>
 
-		<script type="text/javascript" src="js/jquery-3.5.1.slim.min.js"></script>
-		<script type="text/javascript" src="js/custom.js"></script>
-	</body>
+		<div>
+			<table id="tableId">
+				<tbody></tbody>
+			</table>
+		</div>
+
+		<div>
+			<p id="crossNotificationId">X wins!!!</p>
+			<p id="zeroNotificationId">0 wins!!!</p>
+		</div>
+
+		<div>
+			<button id="resetButtonId">reset</button>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="js/jquery-3.5.1.slim.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
 </html>
