@@ -115,7 +115,6 @@ function appendRow(i) {
 function appendColumn(i, j) {
 	let td = $("<td/>");
 	td.attr("id", HTML_CELL_ID_PREFIX + i + j);
-	td.html("test");
 
 	$("#" + HTML_ROW_ID_PREFIX + i).append(td);
 }

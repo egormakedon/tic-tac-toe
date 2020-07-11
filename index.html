@@ -12,26 +12,32 @@
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
 <body>
-	<div>
-		<div>
-			<label for="tableSizeId">size(3-9):</label>
-			<input id="tableSizeId" type="number" value="3">
-			<button id="applyTableSizeButtonId">apply</button>
+	<div class="container">
+		<div class="header">
+			<h1 class="header__title">Tic Tac Toe</h1>
 		</div>
 
-		<div>
-			<table id="tableId">
-				<tbody></tbody>
-			</table>
-		</div>
+		<div class="body">
+			<div class="b-size">
+				<label class="b-size__size-label" for="tableSizeId">Size (3-9):</label>
+				<input class="b-size__size-input" id="tableSizeId" type="number" value="3" min="3" max="9">
+				<button class="b-size__apply-button button" id="applyTableSizeButtonId">Apply</button>
+			</div>
 
-		<div>
-			<p id="crossNotificationId">X wins!!!</p>
-			<p id="zeroNotificationId">0 wins!!!</p>
-		</div>
+			<div class="table">
+				<table id="tableId">
+					<tbody></tbody>
+				</table>
+			</div>
 
-		<div>
-			<button id="resetButtonId">reset</button>
+			<div>
+				<p id="crossNotificationId">X wins!!!</p>
+				<p id="zeroNotificationId">0 wins!!!</p>
+			</div>
+
+			<div>
+				<button class="button" id="resetButtonId">Reset</button>
+			</div>
 		</div>
 	</div>
 
