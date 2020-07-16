@@ -7,6 +7,7 @@ const HTML_ROW_ID_PREFIX = "row";
 const HTML_CELL_ID_PREFIX = "cell";
 const HTML_CROSS_NOTIFICATION_ID = "crossNotificationId";
 const HTML_ZERO_NOTIFICATION_ID = "zeroNotificationId";
+const HTML_DRAW_NOTIFICATION_ID = "drawNotificationId";
 const HTML_RESET_BUTTON_ID = "resetButtonId";
 
 const HTML_CROSS_VALUE = "X";
@@ -98,9 +99,10 @@ function checkGameStatus(cellId) {
 	let count = doGameAlgorithm(cellI, cellJ, cellValue);
 
 	if (count === n) {
-		let notificatinId = cellValue === CROSS_VALUE ? HTML_CROSS_NOTIFICATION_ID : HTML_ZERO_NOTIFICATION_ID;
-
-		$("#" + notificatinId).show();
+		$("#" + (cellValue === CROSS_VALUE ? HTML_CROSS_NOTIFICATION_ID : HTML_ZERO_NOTIFICATION_ID)).show();
+		isGameOver = true;
+	} else if (!gameTable.filter(row => row.filter(cell => cell === EMPTY_VALUE).length).length) {
+		$("#" + HTML_DRAW_NOTIFICATION_ID).show();
 		isGameOver = true;
 	}
 }
@@ -145,6 +147,7 @@ function initIsGameOver() {
 function initNotifications() {
 	$("#" + HTML_CROSS_NOTIFICATION_ID).hide();
 	$("#" + HTML_ZERO_NOTIFICATION_ID).hide();
+	$("#" + HTML_DRAW_NOTIFICATION_ID).hide();
 }
 
 function init() {
